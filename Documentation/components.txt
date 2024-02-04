@@ -1,0 +1,25 @@
+Tables:
+1. Information Of emp cars
+2. Car Entry
+3. In time (cost for customer)
+4. Slot Data
+5. Log Sheet
+
+Components:
+Breadboard
+Arduino uno R3
+RFID Reader
+RFID Tags x 4
+LCD Display
+Ultra sonic Sensor
+Stepper Motor
+Jumper Wires - M2M, M2F
+
+Software:
+Arduino IDE
+ChatGPT
+VS Code
+Python
+Embedded C
+MySQL
+

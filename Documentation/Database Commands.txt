@@ -1,0 +1,16 @@
+Database Commands:
+create database parking_system;
+use parking_system;
+
+Table Creation Commands:
+CREATE TABLE emp (emp_name VARCHAR(255), RFID VARCHAR(255), PRIMARY KEY(RFID));
+CREATE TABLE parked_cars(RFID VARCHAR(255), type VARCHAR(255), SLOT INT, PRIMARY KEY(SLOT));
+CREATE TABLE slots(slot int, is_empty tinyint)
+CREATE TABLE in_time(RFID VARCHAR(255), in_timetinyint)
+CREATE TABLE log(SI int NOT NULL AUTO_INCREMENT, RFID VARCHAR(255), type VARCHAR(255), in_time TIME, out_time TIME, PRIMARY KEY(SI));
+ALTER TABLE log AUTO_INCREMENT=1;
+
+Inserting EMP Data:
+INSERT INTO emp values("EMP1", "RFID0001")
+INSERT INTO emp values("EMP2", "RFID0002")
+INSERT INTO emp values("EMP3", "RFID0003")

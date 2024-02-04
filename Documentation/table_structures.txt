@@ -1,0 +1,21 @@
+1. Information Of emp cars
+2. Car Entry
+3. In time (cost for customer)
+4. Slot Data
+5. Log Sheet
+
+
+1. Information Of emp cars
+(EMP_NAME:VARCHAR(255), RFID:VARCHAR(255))
+
+2. Parked_Cars
+(RFID:VARCHAR(255), TYPE:VARCHAR(255), SLOT:INT)
+
+3. In time 
+(RFID:VARCHAR(255), IN_TIME:TIME)
+
+4. Slot Data
+(SLOT:INT, IS_EMPTY:TINYINT)
+
+5. Log Sheet
+(SI:int NOT NULL AUTO_INCREMENT, RFID:VARCHAR(255), TYPE:VARCHAR(255), IN_TIME:TIME, OUT_TIME:TIME)
