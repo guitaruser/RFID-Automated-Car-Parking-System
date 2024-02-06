@@ -47,12 +47,61 @@ def book_slot(slot_no):
         mydb.rollback()
 
 ''' Function to store the car details in parked_cars ''' 
-def store_car(rfid, type, slot):
+def store_car(rfid, types, slot):
     try:
-        myCur.execute(f'INSERT INTO parked_cars(RFID, type, SLOT) VALUES("{rfid}","{type}",{slot})')
+        myCur.execute(f'INSERT INTO parked_cars(RFID, type, SLOT) VALUES("{rfid}","{types}",{slot})')
         mydb.commit()
         return True
     except:
+        return False
+
+''' Function to store the Time when a car enters parking lot ''' 
+def store_time(rfid):
+    try:
+        now_time = get_time()
+        myCur.execute(f'INSERT INTO in_time(RFID, in_time) VALUES("{rfid}","{now_time}")')
+        mydb.commit()
+        return True
+    except:
+        return False
+
+''' Function to get the Time when a car enters parking lot ''' 
+def get_in_time(rfid):
+    try:
+        myCur.execute(f'select in_time from in_time where RFID = "{rfid}"')
+        in_time = myCur.fetchone()[0]      
+        return in_time
+    except:
+        return -1 
+
+''' Function to store the car details in log ''' 
+def store_in_log(rfid):
+    try:
+        if check_emp(rfid):
+            types = "Emp"
+        else:
+            types = "Cust"
+        # types = "Cust"
+        in_time = get_in_time(rfid)
+        out_time = get_time()
+        myCur.execute(f'INSERT INTO log(RFID, type, in_time, out_time) values("{rfid}","{types}","{in_time}","{out_time}");')
+        mydb.commit()
+        return True
+    except:
+        return False
+
+''' Function to remove the car details from everywhere not needed ''' 
+def flush_from_db(rfid):
+    try:
+        myCur.execute(f'SELECT slot from parked_cars where RFID="{rfid}"')
+        slot = myCur.fetchall()[0][0]
+        myCur.execute(f'UPDATE slots SET is_empty=1 WHERE slot={slot}')
+        myCur.execute(f'DELETE FROM in_time where RFID = "{rfid}"')
+        myCur.execute(f'DELETE FROM parked_cars where RFID = "{rfid}"')
+        mydb.commit()
+        return True
+    except Exception as e:
+        mydb.rollback()
         return False
 
 # Checking
@@ -60,8 +109,10 @@ def store_car(rfid, type, slot):
 #     print('Valid EMP')
 # else:
 #     print('Not an emp')
-# print(check_slot())  
+# # print(check_slot())  
 # store_car('RFID0007', 'CUST', 2)
 # book_slot(1)
-    
-get_time()
+# print(get_time())
+# store_time("RFID0001")
+# print(store_in_log("RFID0003"))
+# flush_from_db("RFID0007")
