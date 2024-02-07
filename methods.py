@@ -6,7 +6,7 @@ mydb = mysql.connect(
     password = 'toor',
     db = 'parking_system'
 );
-
+trial_text = "This works"
 myCur = mydb.cursor()
 
 ''' Function to get the current time in HH:MM:SS Format '''
@@ -42,9 +42,11 @@ def book_slot(slot_no):
         myCur.execute(f'UPDATE slots SET is_empty=0 where slot = {int(slot_no)}')
         mydb.commit()
         print(f"Slot {slot_no} is booked, please procede")
+        return True
     except:
         print("Didn't work")
         mydb.rollback()
+        return False
 
 ''' Function to store the car details in parked_cars ''' 
 def store_car(rfid, types, slot):
@@ -103,6 +105,14 @@ def flush_from_db(rfid):
     except Exception as e:
         mydb.rollback()
         return False
+''' Function to get all info from log ''' 
+def dump_log():
+    try:
+        myCur.execute(f'select * from log')
+        log = myCur.fetchall()    
+        return log
+    except:
+        return -1 
 
 # Checking
 # if check_emp('RFID0002'):
