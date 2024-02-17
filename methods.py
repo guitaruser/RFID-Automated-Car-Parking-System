@@ -1,5 +1,6 @@
 import mysql.connector as mysql
 from datetime import datetime
+import csv
 mydb = mysql.connect(
     host = 'localhost',
     username = 'root',
@@ -8,6 +9,18 @@ mydb = mysql.connect(
 );
 trial_text = "This works"
 myCur = mydb.cursor()
+
+''' Function to dump log from DB to a file '''
+def dump_log_to_file():
+    try:
+        file = open('trial.csv','a',newline='')
+        writer = csv.writer(file)
+        datas = dump_log()
+        writer.writerows(datas)
+        file.close()
+    except Exception as E:
+        print(E)
+        return -1
 
 ''' Function to get the current time in HH:MM:SS Format '''
 def get_time():
@@ -126,3 +139,5 @@ def dump_log():
 # store_time("RFID0001")
 # print(store_in_log("RFID0003"))
 # flush_from_db("RFID0007")
+print(dump_log())
+dump_log_to_file()
