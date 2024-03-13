@@ -10,6 +10,18 @@ mydb = mysql.connect(
 trial_text = "This works"
 myCur = mydb.cursor()
 
+''' Function to Flush The Log DB '''
+def flush_db():
+    try:
+        myCur.execute(f'DELETE FROM log')
+        myCur.execute(f'ALTER TABLE log AUTO_INCREMENT=1;')
+        mydb.commit()
+        
+    except Exception as e:
+        mydb.rollback()
+        print(e)
+
+
 ''' Function to dump log from DB to a file '''
 def dump_log_to_file():
     try:
@@ -18,6 +30,7 @@ def dump_log_to_file():
         datas = dump_log()
         writer.writerows(datas)
         file.close()
+        flush_db()
     except Exception as E:
         print(E)
         return -1
@@ -118,6 +131,7 @@ def flush_from_db(rfid):
     except Exception as e:
         mydb.rollback()
         return False
+    
 ''' Function to get all info from log ''' 
 def dump_log():
     try:
@@ -126,6 +140,14 @@ def dump_log():
         return log
     except:
         return -1 
+    
+''' Function to Calculate Rate ''' 
+def get_rate(rfid):
+    fixed_rate = 20
+    time_now = get_time()
+    in_time = str(get_in_time(rfid))
+    rate = ((int(time_now[0:2]))-int(in_time[0:2]))*12
+    return fixed_rate+rate
 
 # Checking
 # if check_emp('RFID0002'):
@@ -139,5 +161,4 @@ def dump_log():
 # store_time("RFID0001")
 # print(store_in_log("RFID0003"))
 # flush_from_db("RFID0007")
-print(dump_log())
 dump_log_to_file()
